@@ -48,7 +48,8 @@ include(GNUInstallDirs)
 option(PNG_BUILD_ZLIB "Custom zlib Location, else find_package is used" OFF)
 
 if(NOT PNG_BUILD_ZLIB)
-  find_package(ZLIB REQUIRED)
+  find_package(zlib REQUIRED)
+  get_target_property(ZLIB_INCLUDE_DIRS zlib::zlib INTERFACE_INCLUDE_DIRECTORIES)
   include_directories(${ZLIB_INCLUDE_DIRS})
 endif()
 
@@ -629,7 +630,7 @@ if(PNG_STATIC)
     # MSVC does not append 'lib'. Do it here, to have consistent name.
     set_target_properties(png_static PROPERTIES PREFIX "lib")
   endif()
-  target_link_libraries(png_static ${ZLIB_LIBRARIES} ${M_LIBRARY})
+  target_link_libraries(png_static zlib::zlib ${M_LIBRARY})
 endif()
 
 if(PNG_FRAMEWORK)
